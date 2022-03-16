@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Forecast from './components/Forecast';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import axios from "axios";
+import styled from "styled-components";
 
+import { SearchWeather } from "./components/SearchWeather/SearchWeather";
+import Forecast from "./components/Forecast/Forecast";
+
+const apiUrl = "http://localhost:4000/";
 const AppContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -11,68 +14,31 @@ const AppContainer = styled.div`
   padding: 20px;
 `;
 
-const SearchBar = styled.input`
-  width: 300px;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 0 10px;
-  margin: 0 auto;
-  margin-bottom: 10px;
-`;
-
 function App() {
   const [weather, setWeather] = useState(null);
-  const [query, setQuery] = useState('');
+  const [error, setError] = useState(null);
+  const [memo, setMemo] = useState({});
 
-  const fetchData = async () => {
+  const handleWeather = async (query) => {
     try {
-      const apiUrl = 'http://localhost:4000/';
-      const { data } = await axios.get(`${apiUrl}${query}`);
-
+      if (memo[query]) {
+        setWeather(memo[query]);
+        return;
+      }
+      const { data } = await axios.get(`${apiUrl}search/${query}`);
+      setMemo({ query: data });
       setWeather(data);
-
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      setError(e);
     }
   };
-
-  useEffect(() => {
-    if (!query.trim().length) {
-      setWeather(null);
-      return;
-    }
-
-    let timeout = setTimeout(async () => {
-      try {
-        await fetchData();
-      } catch (error) {
-        console.log(error);
-        setWeather('');
-      }
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [query]);
-
   console.log(weather);
 
   return (
     <AppContainer>
-      {' '}
-      <SearchBar
-        type='search'
-        value={query}
-        onChange={(e) => {
-          e.stopPropagation();
-          setQuery(e.target.value);
-        }}
-        style={{ width: '200px' }}
-      />
-      <Forecast weather={weather} />
+      {error && <div>{error.message}</div>}
+      <SearchWeather handleWeather={handleWeather} />
+      {/* <Forecast weather={weather} /> */}
     </AppContainer>
   );
 }

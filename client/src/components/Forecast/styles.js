@@ -1,6 +1,4 @@
-import React from 'react';
-import styled from 'styled-components';
-import { format, parseISO } from 'date-fns';
+import styled from "styled-components";
 
 const ForecastContainer = styled.article`
   display: flex;
@@ -52,23 +50,12 @@ const FeelsLikeTemp = styled.p`
   color: white;
 `;
 
-function Forecast({ weather }) {
-  return (
-    <ForecastContainer>
-      <Header> {weather?.location.name}</Header>
-      <LocalTime>
-        {/* {format(parseISO(weather?.location.localtime), 'MMMM dd, yyyy')} */}
-        <Icon
-          src={weather?.current.condition.icon}
-          alt={weather?.current.condition.text}
-        />
-      </LocalTime>
-
-      <Temp>{weather?.current.temp_c}&deg;C</Temp>
-      <FeelsLikeTemp>{weather?.current.feelslike_c}</FeelsLikeTemp>
-      <Description>{weather?.current.condition.text}</Description>
-    </ForecastContainer>
-  );
-}
-
-export default Forecast;
+export {
+  ForecastContainer,
+  Header,
+  LocalTime,
+  Icon,
+  Temp,
+  Description,
+  FeelsLikeTemp,
+};

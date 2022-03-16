@@ -1,1 +1,0 @@
-export { useWeatherFetch } from './useWeatherFetch';
