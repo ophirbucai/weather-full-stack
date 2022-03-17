@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const SearchBar = styled.input`
+const SearchBarInput = styled.input`
   width: 300px;
   height: 40px;
   border-radius: 5px;
@@ -11,24 +11,29 @@ const SearchBar = styled.input`
   margin-bottom: 10px;
 `;
 
-export const SearchWeather = ({ fetchWeather, handleWeather }) => {
+export const SearchWeather = ({ searchQueryHandler }) => {
   const [query, setQuery] = useState("");
 
   const search = () => {
-    handleWeather(query);
+    searchQueryHandler(query);
   };
 
   return (
-    <>
-      <SearchBar
+    <div>
+      <SearchBarInput
         type="search"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
         }}
         style={{ width: "200px" }}
+        data-testid="searchbarinput"
       />
-      <button onClick={search}>Search</button>
-    </>
+      <button data-testid="searchbarsubmit" onClick={search}>
+        Search
+      </button>
+    </div>
   );
 };
+
+export default SearchWeather;

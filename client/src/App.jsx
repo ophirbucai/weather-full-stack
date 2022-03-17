@@ -19,7 +19,7 @@ function App() {
   const [error, setError] = useState(null);
   const [memo, setMemo] = useState({});
 
-  const handleWeather = async (query) => {
+  const searchQueryHandler = async (query) => {
     try {
       if (memo[query]) {
         setWeather(memo[query]);
@@ -37,7 +37,7 @@ function App() {
   return (
     <AppContainer>
       {error && <div>{error.message}</div>}
-      <SearchWeather handleWeather={handleWeather} />
+      <SearchWeather searchQueryHandler={searchQueryHandler} />
       {/* <Forecast weather={weather} /> */}
     </AppContainer>
   );
